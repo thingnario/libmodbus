@@ -34,7 +34,6 @@ if [ $tool_chain_path == '/usr/local'  ]; then
 else
   ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
 fi
-./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
 make
 sudo "PATH=$PATH" make install
 sudo rm $tool_chain_path/lib/libmodbus.so*
