@@ -5,6 +5,7 @@ AM_CPPFLAGS = \
     -include $(top_builddir)/config.h \
     -DSYSCONFDIR=\""$(sysconfdir)"\" \
     -DLIBEXECDIR=\""$(libexecdir)"\" \
+		-I$(includedir) \
     -I${top_srcdir}/src
 
 AM_CFLAGS = ${my_CFLAGS}
