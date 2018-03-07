@@ -28,7 +28,13 @@ export RANLIB=${ARCH}-ranlib
 export CC=${ARCH}-gcc
 export NM=${ARCH}-nm
 
-./autogen.sh;./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
-make 
+./autogen.sh;
+if [ $tool_chain_path == '/usr/local'  ]; then
+  ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --enable-static --without-documentation
+else
+  ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
+fi
+./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
+make
 sudo "PATH=$PATH" make install
 sudo rm $tool_chain_path/lib/libmodbus.so*
