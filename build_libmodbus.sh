@@ -20,20 +20,28 @@ ARCH=`echo $item | sed -e 's/-gcc.*//g'`
 echo "Building libmodbus..."
 
 # ======== libmodbus with static build ========
-export ARCH=$ARCH
-export AR=${ARCH}-ar
-export AS=${ARCH}-as
-export LD=${ARCH}-ld
-export RANLIB=${ARCH}-ranlib
-export CC=${ARCH}-gcc
-export NM=${ARCH}-nm
-
+make distclean
 ./autogen.sh;
-if [ $tool_chain_path == '/usr/local'  ]; then
+
+export ARCH=$ARCH
+if [ "$ARCH" == "" ]; then
+	export AR=ar
+	export AS=as
+	export LD=ld
+	export RANLIB=ranlib
+	export CC=gcc
+	export NM=nm
   ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --enable-static --without-documentation
 else
+	export AR=${ARCH}-ar
+	export AS=${ARCH}-as
+	export LD=${ARCH}-ld
+	export RANLIB=${ARCH}-ranlib
+	export CC=${ARCH}-gcc
+	export NM=${ARCH}-nm
   ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
 fi
+
 make
 sudo "PATH=$PATH" make install
 sudo rm $tool_chain_path/lib/libmodbus.so*
