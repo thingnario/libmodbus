@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-    echo $0: usage: cross_compile_library.sh ARCH 
-    echo "example: usage: cross_compile_library.sh [ arm-linux | arm-linux-gnueabihf | arm-linux-gnueabi ]"
-    exit 1
+if [ "$#" -ne 2 ]; then
+    echo "Usage: ./build_libmodbus.sh tool_chain_path install_path!"
+    echo "Example: ./build_libmodbus.sh /usr/local/arm-linux /Desktop/eric/logger/build/moxa-ia240/libmodbus"
+    exit
 fi
 
 export PATH="$PATH:$1/bin"
@@ -26,7 +26,7 @@ if [ "$ARCH" == "" ]; then
   export LD=ld
   export AS=as
   export CC=gcc
-  ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --enable-static --without-documentation
+  ./configure --prefix=$2 ac_cv_func_malloc_0_nonnull=yes --enable-static --without-documentation
 else
   export AR=${ARCH}-ar
   export AS=${ARCH}-as
@@ -34,8 +34,8 @@ else
   export RANLIB=${ARCH}-ranlib
   export CC=${ARCH}-gcc
   export NM=${ARCH}-nm
-  ./configure --prefix=$tool_chain_path ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
+  ./configure --prefix=$2 ac_cv_func_malloc_0_nonnull=yes --target=${ARCH} --host=${ARCH}  --enable-static --without-documentation
 fi
 make
-sudo "PATH=$PATH" make install
-sudo rm $tool_chain_path/lib/libmodbus.so*
+make install
+rm $2/lib/libmodbus.so*
