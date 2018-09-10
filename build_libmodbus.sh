@@ -7,6 +7,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 export PATH="$PATH:$1/bin"
+export CPATH="$1/include"
 
 tool_chain_path=$1
 #ARCH=`echo $1 | awk -F"/" '{print (NF>1)? $NF : $1}'`
